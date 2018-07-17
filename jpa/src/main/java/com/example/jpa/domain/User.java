@@ -19,11 +19,13 @@ public class User {
 	private String userPass;
 	private String userName;
 	private String email;
+	
+	
 
 	@Override
 	public String toString() {
-		return "User [userID=" + userID + ", userPass=" + userPass + ", userName=" + userName + ", email=" + email
-				+ "]";
+		return "User [userNo=" + userNo + ", userID=" + userID + ", userPass=" + userPass + ", userName=" + userName
+				+ ", email=" + email + "]";
 	}
 
 	public long getUserNo() {
@@ -64,6 +66,13 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public void update(User updateUser) {
+		this.userPass = updateUser.userPass;
+		this.userName = updateUser.userName;
+		this.email = updateUser.email;
+		
 	}
 
 }
