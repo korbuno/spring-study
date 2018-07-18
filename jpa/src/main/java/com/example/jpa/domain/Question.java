@@ -76,6 +76,19 @@ public class Question {
 		this.createDate = createDate;
 	}
 	
+	public Question update(Question question) {
+		this.title = question.getTitle();
+		this.contents = question.getContents();
+		return this;
+	}
+	
+	public boolean isSameWriter(User loginUser) {
+		return this.writer.equals(loginUser);
+	}
+
+
+
+
 	
 
 }
