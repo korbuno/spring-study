@@ -1,5 +1,7 @@
 package com.example.jpa.web;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -51,6 +53,31 @@ public class UserController {
 		// id값이 기존에 있으면 update를 수행한다.
 		userRepository.save(user);
 		return "redirect:/users";
+	}
+	
+	@GetMapping("/loginForm")
+	public String loginForm() {
+		return "/user/login";
+	}
+	
+	@PostMapping("/login")
+	public String login(String userID, String userPass, HttpSession session) {
+		
+		User user = userRepository.findByUserID(userID);
+		if(user == null) {
+			System.out.println("Login Fail!");
+			return "redirect:/users/loginForm";
+		}
+		
+		if(!userPass.equals(user.getUserPass())) {
+			System.out.println("Login Fail!");
+			return "redirect:/users/loginForm";			
+		}
+		
+		System.out.println("Login Success!");
+		session.setAttribute("user", user);
+		
+		return "redirect:/";
 	}
 	
 }
