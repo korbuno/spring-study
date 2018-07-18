@@ -12,20 +12,19 @@ public class User {
 	// ex) userPass -> USER_PASS
 	// ex) userName -> USER_NAME
 	// 주의) userID -> USERID
-	
+
 	// Id : PK, GV : AutoInc
-	@Id @GeneratedValue
+	@Id
+	@GeneratedValue
 	private long userNo;
-	
-	//nullable = false : null값 금지
-	//length = 20 : 길이 변경 (기본 255)
-	@Column(nullable=false, length=255, unique=true)
+
+	// nullable = false : null값 금지
+	// length = 20 : 길이 변경 (기본 255)
+	@Column(nullable = false, length = 255, unique = true)
 	private String userID;
 	private String userPass;
 	private String userName;
 	private String email;
-	
-	
 
 	@Override
 	public String toString() {
@@ -77,7 +76,14 @@ public class User {
 		this.userPass = updateUser.userPass;
 		this.userName = updateUser.userName;
 		this.email = updateUser.email;
-		
+	}
+
+	public boolean matchPassword(String newPassword) {
+		return this.userPass == newPassword ? true : false;
+	}
+
+	public boolean matchUserNo(long newUserNo) {
+		return this.userNo == newUserNo ? true : false;
 	}
 
 }
