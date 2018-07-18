@@ -8,13 +8,18 @@ import javax.persistence.Id;
 @Entity
 public class User {
 
+	// DB에 테이블 생성 시, 낙타식 표기는 _로 표기됨.
+	// ex) userPass -> USER_PASS
+	// ex) userName -> USER_NAME
+	// 주의) userID -> USERID
+	
 	// Id : PK, GV : AutoInc
 	@Id @GeneratedValue
 	private long userNo;
 	
 	//nullable = false : null값 금지
 	//length = 20 : 길이 변경 (기본 255)
-	@Column(nullable=false, length=20)
+	@Column(nullable=false, length=255, unique=true)
 	private String userID;
 	private String userPass;
 	private String userName;

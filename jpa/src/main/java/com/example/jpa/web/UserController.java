@@ -40,15 +40,36 @@ public class UserController {
 	}
 	
 	@GetMapping("/{userNo}/form")
-	public String updateForm(@PathVariable Long userNo, Model model) {
+	public String updateForm(@PathVariable Long userNo, Model model, HttpSession session) {
+		User sessionedUser = (User) session.getAttribute("sessionedUser");
+		
+		if(sessionedUser == null) {
+			return "redirect:/users/loginForm";
+		}
+		
+		if(!userNo.equals(sessionedUser.getUserNo())) {
+			throw new IllegalStateException("incorrect information error");
+		}
+		
 		model.addAttribute("user", userRepository.findOne(userNo));
 		return "/user/updateForm";
 	}
 	
 	@PutMapping("/{userNo}")
-	public String update(@PathVariable Long userNo, User updateUser) {
+	public String update(@PathVariable Long userNo, User updatedUser, HttpSession session) {
+		User sessionedUser = (User) session.getAttribute("sessionedUser");
+
+		if(sessionedUser == null) {
+			return "redirect:/users/loginForm";
+		}
+		
+		if(!userNo.equals(sessionedUser.getUserNo())) {
+			throw new IllegalStateException("incorrect information error");
+		}
+		
+		
 		User user = userRepository.findOne(userNo);
-		user.update(updateUser);
+		user.update(updatedUser);
 		
 		// id값이 기존에 있으면 update를 수행한다.
 		userRepository.save(user);
@@ -75,7 +96,15 @@ public class UserController {
 		}
 		
 		System.out.println("Login Success!");
-		session.setAttribute("user", user);
+		session.setAttribute("sessionedUser", user);
+		
+		return "redirect:/";
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("sessionedUser");
+		
 		
 		return "redirect:/";
 	}
